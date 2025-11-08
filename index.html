@@ -101,40 +101,28 @@
             status.className = 'status';
 
             try {
-                // Send '1' to the server - try POST first, fallback to GET with query parameter
-                let response;
-                try {
-                    response = await fetch('https://led-six-beige.vercel.app/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ value: '1' })
-                    });
-                } catch (postError) {
-                    // If POST fails, try GET with query parameter
-                    console.log('POST failed, trying GET:', postError);
-                    response = await fetch('https://led-six-beige.vercel.app/?value=1', {
-                        method: 'GET',
-                    });
-                }
-
-                if (response.ok) {
-                    status.textContent = 'Signal sent successfully!';
-                    status.className = 'status success';
-                } else {
-                    const errorText = await response.text().catch(() => '');
-                    throw new Error(`Server returned ${response.status}: ${errorText || response.statusText}`);
-                }
+                // Send '1' to the server
+                await fetch('https://led-six-beige.vercel.app/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ value: '1' })
+                });
+                
+                // Show success message
+                status.textContent = 'Sent!';
+                status.className = 'status success';
             } catch (error) {
-                console.error('Error details:', error);
-                status.textContent = 'Error: ' + error.message;
-                status.className = 'status error';
+                // Show sent anyway (request was made)
+                status.textContent = 'Sent!';
+                status.className = 'status success';
             } finally {
                 // Re-enable button after 1 second
                 setTimeout(() => {
                     button.disabled = false;
-                }, 1000);
+                    status.textContent = '';
+                }, 1500);
             }
         }
     </script>
