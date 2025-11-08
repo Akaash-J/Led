@@ -101,8 +101,8 @@
             status.className = 'status';
 
             try {
-                // Send '1' to the server
-                await fetch('https://led-six-beige.vercel.app/', {
+                // Send '1' to the API endpoint
+                await fetch('https://led-six-beige.vercel.app/api/led', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
